@@ -199,7 +199,7 @@ if __name__ == '__main__':
     buttonSegmentation = tkinter.Button(root, text='Show', bg='DarkKhaki', command=show_click)
     buttonSegmentation.place(x=440, y=260, width=150, height=40)
 
-    paddle.enable_static()
+    # paddle.enable_static()
     # program = paddle.load('./models/inference_model.pdmodel')
 
     paddle.disable_static()
@@ -212,10 +212,14 @@ if __name__ == '__main__':
     data = np.load('data/mnist.npz')
     test_imgs = data['x_test']
     pic_id = int(input('Input pic id: '))
+
+    input = paddle.to_tensor(test_imgs[pic_id]/255., dtype='float32').reshape((1, 1, 28, 28))
+    output = np.squeeze(net(input).numpy())
+    print(output)
+    # assert 1==2
+    plt.title(str(np.argmax(output)) + '\n@' + str(list(round(i, 3) for i in output)))
     plt.imshow(test_imgs[pic_id])
     plt.show()
-    input = paddle.to_tensor(test_imgs[pic_id]/255., dtype='float32').reshape((1, 1, 28, 28))
-    print(net(input))
 
     # 启动消息主循环
     root.update()

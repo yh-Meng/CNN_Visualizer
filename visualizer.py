@@ -203,11 +203,17 @@ if __name__ == '__main__':
     # program = paddle.load('./models/inference_model.pdmodel')
 
     paddle.disable_static()
-    net = paddle.jit.load('./models/dyn_model')
+    net = paddle.jit.load('./models/dyn_model') # translated_layer
     net.eval()
     print(net.full_name())
     # print(net.parameters())
     paddle.summary(net, input_size=(None, 1, 28, 28))
+
+    # program = net.program('conv2d_2') #  参数为要获取的Porgram对应的方法名。默认值为"forward"
+    # print(program)
+    layer_list = list(net.children())
+    print(layer_list) # empty
+    assert 1==2
     
     data = np.load('data/mnist.npz')
     test_imgs = data['x_test']

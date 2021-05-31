@@ -98,7 +98,9 @@ def train(layer, loader, loss_fn, opt, epoch):
 
 # net = vision.models.LeNet()
 net = MyLeNet()
-paddle.summary(net, (1,1,28,28))
+layer_list = list(net.children())
+print(type(layer_list[0])) # <class 'paddle.fluid.dygraph.container.Sequential'>
+# paddle.summary(net, (1,1,28,28))
 assert 1==2
 # print(type(net))
 # # print(type(paddle.Model(model)))
@@ -151,7 +153,7 @@ model.evaluate(test_data_gen, verbose=1) # 在输入数据上，评估模型的�
 # model.save('models/inference_model', False)  # save for inference
 
 # 保存模型&参数
-paddle.jit.save(net, 'models/dyn_model', input_spec=[InputSpec(shape=[None, 1, 28, 28], dtype='float32')])
+# paddle.jit.save(net, 'models/dyn_model', input_spec=[InputSpec(shape=[None, 1, 28, 28], dtype='float32')])
 
 
 
